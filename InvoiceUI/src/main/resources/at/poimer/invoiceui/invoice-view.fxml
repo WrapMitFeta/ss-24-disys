@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.poimer.invoiceui.controller.InvoiceController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <HBox alignment="CENTER" spacing="8.0">
+        <children>
+            <Label text="Customer ID" />
+            <TextField fx:id="customerIdTextField" promptText="Customer ID" />
+        </children>
+    </HBox>
+    <HBox alignment="CENTER" spacing="16.0">
+        <children>
+            <Button onAction="#onGenerateInvoiceButtonClick" text="Generate Invoice" />
+        </children>
+    </HBox>
+</VBox>
