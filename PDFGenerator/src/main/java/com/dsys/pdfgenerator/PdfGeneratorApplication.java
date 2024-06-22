@@ -9,9 +9,10 @@ import java.util.concurrent.TimeoutException;
 
 @SpringBootApplication
 public class PdfGeneratorApplication {
+    static PDFGeneratorController pdfGeneratorController = new PDFGeneratorController();
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        PDFGeneratorController.run();
+        pdfGeneratorController.run();
     }
 
 }

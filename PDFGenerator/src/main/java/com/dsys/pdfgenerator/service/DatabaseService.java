@@ -5,14 +5,14 @@ import com.dsys.pdfgenerator.model.Customer;
 import java.sql.*;
 
 public class DatabaseService {
-    private static Connection connect() throws SQLException {
+    private Connection connect() throws SQLException {
         String connectionString="jdbc:postgresql://localhost:30001/customerdb";
         return DriverManager.getConnection(connectionString, "postgres", "postgres");
     }
 
 
 
-    public static Customer getCustomer(String id) throws SQLException {
+    public Customer getCustomer(String id) throws SQLException {
         Customer customer;
         try ( Connection conn = connect() ) {
             String query = "SELECT id, first_name, last_name FROM customer WHERE id = " + id + ";";

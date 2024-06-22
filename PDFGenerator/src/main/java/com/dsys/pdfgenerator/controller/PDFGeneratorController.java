@@ -16,16 +16,27 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class PDFGeneratorController {
-    private static MessageService messageService = new MessageService();
-    private static DatabaseService databaseService = new DatabaseService();
-    private static Print print;
-    public static void run() throws IOException, TimeoutException {
+    private MessageService messageService;
+    private DatabaseService databaseService;
+    private Print print;
+
+    public PDFGeneratorController() {
+        this.databaseService = new DatabaseService();
+        this.messageService = new MessageService(this);
+    }
+
+    public PDFGeneratorController(MessageService messageService, DatabaseService databaseService) {
+        this.messageService = messageService;
+        this.databaseService = databaseService;
+    }
+
+    public void run() throws IOException, TimeoutException {
         String[] subscribe = new String[1];
         subscribe[0] = "pdf_service";
         messageService.listen(subscribe);
     }
 
-    public static void print(String[] message) throws SQLException, DocumentException, FileNotFoundException {
+    public void print(String[] message) throws SQLException, DocumentException, FileNotFoundException {
         Customer customer;
 
         if (message[0].equals("start")) {
@@ -41,9 +52,9 @@ public class PDFGeneratorController {
 
     }
 
-    public static void generate(Print print) throws FileNotFoundException, DocumentException {
+    public void generate(Print print) throws FileNotFoundException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("Invoice " + print.getCustomer().getCustomer_id() + ".pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("../Invoice " + print.getCustomer().getCustomer_id() + ".pdf"));
         String spacing = "       ";
 
         document.open();
@@ -95,7 +106,7 @@ public class PDFGeneratorController {
                 } catch (DocumentException e) {
                     throw new RuntimeException(e);
                 } finally {
-                    stationTotal = stationTotal + Double.valueOf(kwh);
+                    stationTotal = stationTotal + Double.parseDouble(kwh);
                 }
             };
             total = total + stationTotal;

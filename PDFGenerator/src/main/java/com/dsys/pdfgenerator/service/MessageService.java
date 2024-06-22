@@ -15,6 +15,12 @@ import java.util.concurrent.TimeoutException;
 
 public class MessageService {
     private ConnectionFactory factory = new ConnectionFactory();
+    private PDFGeneratorController controller;
+
+    public MessageService(PDFGeneratorController controller) {
+        this.controller = controller;
+    }
+
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
         factory.setHost("localhost");
@@ -35,7 +41,7 @@ public class MessageService {
             String[] message_info = message.split(" ");
             System.out.println(" [x] Received '" + message + "'");
             try {
-                PDFGeneratorController.print(message_info);
+                controller.print(message_info);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

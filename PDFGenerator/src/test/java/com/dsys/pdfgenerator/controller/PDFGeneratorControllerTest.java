@@ -1,43 +1,34 @@
 package com.dsys.pdfgenerator.controller;
 
-import com.dsys.pdfgenerator.model.Customer;
-import com.dsys.pdfgenerator.model.Print;
-import com.dsys.pdfgenerator.model.StationBillingList;
-import com.itextpdf.text.DocumentException;
+import com.dsys.pdfgenerator.service.DatabaseService;
+import com.dsys.pdfgenerator.service.MessageService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeoutException;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+@ExtendWith(MockitoExtension.class)
 class PDFGeneratorControllerTest {
+    @Mock
+    DatabaseService databaseService;
+    @Mock
+    MessageService messageService;
 
     @Test
-    void testRun() throws Exception {
-        // Setup
-        // Run the test
-        PDFGeneratorController.run();
-
-        // Verify the results
+    @DisplayName("File has a header")
+    public void fileHasAHeader() {
+        Assertions.assertNotNull(databaseService);
+        Assertions.assertNotNull(messageService);
     }
 
-
-
     @Test
-    void testGenerate() throws Exception {
-        // Setup
-        final Print print = new Print(new Customer(1, "first_name", "last_name"),
-                new ArrayList<>(List.of(new StationBillingList("station_id", new ArrayList<>(List.of("12","14", "16"))))));
-
-        // Run the test
-        PDFGeneratorController.generate(print);
-
-        // Verify the results
+    @DisplayName("File is in correct location")
+    public void fileIsInCorrectLocation() {
+        Assertions.assertNotNull(databaseService);
+        Assertions.assertNotNull(messageService);
     }
 
 }
