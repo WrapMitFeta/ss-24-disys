@@ -56,7 +56,7 @@ public class InvoiceController {
      */
     @GetMapping("/customers/{customerId}/invoice")
     public ResponseEntity<byte[]> getInvoice(@PathVariable int customerId) {
-        log.info("Get invoice generation");
+        log.info("Get invoice generation for customer id {}", customerId);
 
         if (customerId <= 0) {
             log.info("Customer id: {} is invalid", customerId);
@@ -64,7 +64,7 @@ public class InvoiceController {
         }
 
         try {
-            String sourcePath = "Invoice " + customerId + ".pdf";
+            String sourcePath = "../Invoice " + customerId + ".pdf";
             var path = Paths.get(sourcePath);
             var invoice = new UrlResource(path.toUri());
 

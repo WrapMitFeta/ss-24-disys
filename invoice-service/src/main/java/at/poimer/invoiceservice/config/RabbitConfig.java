@@ -22,6 +22,6 @@ public class RabbitConfig {
      */
     @Bean
     public DirectExchange direct() {
-        return new DirectExchange("spring_app");
+        return new DirectExchange("spring_app", false, false);
     }
 }
