@@ -25,7 +25,8 @@ public class InvoiceController implements InvoiceProgressDelegate {
     @FXML
     protected void onGenerateInvoiceButtonClick() {
         try {
-            int customerId = Integer.parseInt(customerIdTextField.getText());
+            var customerIdString = customerIdTextField.getText().trim();
+            int customerId = Integer.parseInt(customerIdString);
             viewModel.postInvoice(customerId);
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
