@@ -8,14 +8,20 @@ import com.rabbitmq.client.DeliverCallback;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
 public class MessageService {
+
     ConnectionFactory factory = new ConnectionFactory();
+    DistpatchingController dispatcher;
+
+    public MessageService(DistpatchingController dispatcher) {
+        this.dispatcher = dispatcher;
+    }
 
 
-    public boolean sendMessage(String to, String message, String customer_id) throws Exception {
+
+    public  void sendMessage(String to, String message, String customer_id) throws Exception {
         factory.setHost("localhost");
         factory.setPort(30003);
         message = customer_id + " " + message;
@@ -27,7 +33,6 @@ public class MessageService {
             channel.basicPublish("spring_app", to, null, message.getBytes("UTF-8"));
             System.out.println(" [x] Sent '" + to + "':'" + message + "'");
         }
-        return true;
     }
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
@@ -48,7 +53,7 @@ public class MessageService {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             System.out.println(" [x] Received '" + message + "'");
             try {
-                DistpatchingController.dispatch(message);
+                dispatcher.dispatch(message);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

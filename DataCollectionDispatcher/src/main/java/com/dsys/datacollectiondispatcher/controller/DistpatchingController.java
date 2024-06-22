@@ -9,15 +9,29 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class DistpatchingController {
+    private MessageService messageService;
+    private DatabaseService databaseService;
 
-    private static MessageService messageService = new MessageService();
-    private static DatabaseService databaseService = new DatabaseService();
+    public DistpatchingController() {
+        this.messageService = new MessageService(this);
+        this.databaseService = new DatabaseService();
+    }
+
+    public DistpatchingController(MessageService messageService, DatabaseService databaseService) {
+        this.messageService = messageService;
+        this.databaseService = databaseService;
+    }
+
+
+
+
     public void run() throws IOException, TimeoutException {
             String[] subscribedTo=new String[1];
             subscribedTo[0] = "dispatch";
             messageService.listen(subscribedTo);
     }
-    public static void dispatch(String customerId) throws Exception {
+
+    public void dispatch(String customerId) throws Exception {
         ArrayList<Station> stations = databaseService.getStations();
         messageService.sendMessage("collection_receiver", "start", customerId);
         stations.forEach(station -> {

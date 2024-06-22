@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 
 @SpringBootApplication
 public class DataCollectionDispatcherApplication {
-	static DistpatchingController dispatcher = new DistpatchingController();
+	 static DistpatchingController dispatcher = new DistpatchingController();
 
 	public static void main(String[] args) throws IOException, TimeoutException {
 		dispatcher.run();

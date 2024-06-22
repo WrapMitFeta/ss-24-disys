@@ -8,15 +8,16 @@ import com.dsys.datacollectiondispatcher.model.Station;
 
 public class DatabaseService {
 
+    private String connectionString="jdbc:postgresql://localhost:30002/stationdb";
 
-    private static Connection connect() throws SQLException {
-        String connectionString="jdbc:postgresql://localhost:30002/stationdb";
+
+    private  Connection connect() throws SQLException {
         return DriverManager.getConnection(connectionString, "postgres", "postgres");
     }
 
 
 
-    public static ArrayList<Station> getStations() throws SQLException {
+    public  ArrayList<Station> getStations() throws SQLException {
         ArrayList<Station> stations = new ArrayList<>();
 
         try ( Connection conn = connect() ) {

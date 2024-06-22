@@ -1,40 +1,46 @@
 package com.dsys.datacollectiondispatcher.controller;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.dsys.datacollectiondispatcher.model.Station;
+import com.dsys.datacollectiondispatcher.service.DatabaseService;
+import com.dsys.datacollectiondispatcher.service.MessageService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class DistpatchingControllerTest {
+    @Mock
+    DatabaseService databaseService;
+    @Mock
+    MessageService messageService;
 
-    private DistpatchingController distpatchingControllerUnderTest;
-
-    @BeforeEach
-    void setUp() {
-        distpatchingControllerUnderTest = new DistpatchingController();
-    }
-
-    @Test
-    void testRun() throws Exception {
-        // Setup
-        // Run the test
-        distpatchingControllerUnderTest.run();
-
-        // Verify the results
-    }
 
 
     @Test
-    void testDispatch() throws Exception {
-        // Setup
-        // Run the test
-        DistpatchingController.dispatch("customerId");
+    @DisplayName("Should send Number of Stations +2 Messages ")
+    public void shouldSendNumberOfStationsMessages() throws Exception {
+        DistpatchingController dispatcher = new DistpatchingController(messageService, databaseService);
+        ArrayList<Station> stations = new ArrayList<>();;
 
-        // Verify the results
+        stations.add(new Station(1, "", 100,200));
+        stations.add(new Station(2, "", 100,200));
+        stations.add(new Station(3, "", 100,200));
+
+
+
+        when(databaseService.getStations()).thenReturn(stations);
+        doNothing().when(messageService).sendMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+
+        dispatcher.dispatch("1");
+        verify(messageService, times(2+stations.size())).sendMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+
     }
-
 
 }
