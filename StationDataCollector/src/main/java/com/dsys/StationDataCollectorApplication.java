@@ -9,9 +9,10 @@ import java.util.concurrent.TimeoutException;
 
 @SpringBootApplication
 public class StationDataCollectorApplication {
+    static CollectionController collectionController = new CollectionController();
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        CollectionController.run();
+        collectionController.run();
     }
 
 }

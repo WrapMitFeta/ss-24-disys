@@ -10,14 +10,14 @@ import java.util.ArrayList;
 public class DatabaseService {
 
 
-    private static Connection connect(String to) throws SQLException {
+    private  Connection connect(String to) throws SQLException {
         String connectionString="jdbc:postgresql://"+ to + "/stationdb";
         return DriverManager.getConnection(connectionString, "postgres", "postgres");
     }
 
 
 
-    public static ArrayList<Station> getStations(String customer_id, String to) throws SQLException {
+    public  ArrayList<Station> getStations(String customer_id, String to) throws SQLException {
         ArrayList<Station> stations = new ArrayList<>();
 
         try ( Connection conn = connect(to) ) {

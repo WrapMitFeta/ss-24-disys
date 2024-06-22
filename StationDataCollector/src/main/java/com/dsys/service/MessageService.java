@@ -12,9 +12,14 @@ import java.util.concurrent.TimeoutException;
 
 public class MessageService {
     private ConnectionFactory factory = new ConnectionFactory();
+    private CollectionController collectionController;
+
+    public MessageService(CollectionController collectionController) {
+        this.collectionController = collectionController;
+    }
 
 
-    public boolean sendMessage(String to, String message, String customer_id) throws Exception {
+    public void sendMessage(String to, String message, String customer_id) throws Exception {
         factory.setHost("localhost");
         factory.setPort(30003);
         message = customer_id + " " + message;
@@ -27,7 +32,6 @@ public class MessageService {
             channel.basicPublish("spring_app", to, null, message.getBytes("UTF-8"));
             System.out.println(" [x] Sent '" + to + "':'" + message + "'");
         }
-        return true;
     }
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
@@ -49,7 +53,7 @@ public class MessageService {
             String[] message_info = message.split(" ");
             System.out.println(" [x] Received '" + message + "'");
             try {
-              CollectionController.collect(message_info[0], message_info[1]);
+              collectionController.collect(message_info[0], message_info[1]);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

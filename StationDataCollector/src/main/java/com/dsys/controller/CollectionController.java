@@ -11,15 +11,27 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 public class CollectionController {
-    private static DatabaseService databaseService = new DatabaseService();
-    private static MessageService messageService = new MessageService();
-    private static int index = 1;
-    public static void run() throws IOException, TimeoutException {
+    private DatabaseService databaseService ;
+    private MessageService messageService ;
+    private int index = 1;
+
+    public CollectionController(DatabaseService databaseService, MessageService messageService) {
+        this.databaseService = databaseService;
+        this.messageService = messageService;
+    }
+
+    public CollectionController() {
+        this.databaseService = new DatabaseService();
+        this.messageService = new MessageService(this);
+    }
+
+    public void run() throws IOException, TimeoutException {
         String[] subscribe = new String[1];
         subscribe[0] = "data_collector";
         messageService.listen(subscribe);
     }
-    public static void collect(String customer_id ,String message) throws SQLException {
+
+    public  void collect(String customer_id ,String message) throws SQLException {
         ArrayList<Station> stations = null;
         if(message.equals("end")) finalize(customer_id);
         else stations =  databaseService.getStations(customer_id, message);
@@ -34,7 +46,8 @@ public class CollectionController {
             index++;
         }
     };
-    public static void finalize(String customer_id) {
+
+    public void finalize(String customer_id) {
         index = 1;
         try {
             messageService.sendMessage("collection_receiver", "finished", customer_id);

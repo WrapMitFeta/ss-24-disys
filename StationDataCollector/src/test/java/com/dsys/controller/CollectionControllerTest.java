@@ -1,40 +1,41 @@
 package com.dsys.controller;
 
+import com.dsys.model.Station;
+import com.dsys.service.DatabaseService;
+import com.dsys.service.MessageService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class CollectionControllerTest {
-
-    @Test
-    void testRun() throws Exception {
-        // Setup
-        // Run the test
-        CollectionController.run();
-
-        // Verify the results
-    }
-
+    @Mock
+    DatabaseService databaseService;
+    @Mock
+    MessageService messageService;
 
 
     @Test
-    void testCollect_ThrowsSQLException() {
-        // Setup
-        // Run the test
-        assertThatThrownBy(() -> CollectionController.collect("customer_id", "message"))
-                .isInstanceOf(SQLException.class);
-    }
+    @DisplayName("Should send 1 + number of messages")
+    void shouldSend1NumberOfMessages() throws Exception {
+        ArrayList<Station> stations = new ArrayList<>();
+        stations.add(new Station(1, 200, 1));
+        stations.add(new Station(2, 200, 2));
+        stations.add(new Station(3, 200, 3));
+        CollectionController collectionController = new CollectionController(databaseService, messageService);
+        doNothing().when(messageService).sendMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        when(databaseService.getStations(Mockito.any(), Mockito.any())).thenReturn(stations);
 
-    @Test
-    void testFinalize() {
-        // Setup
-        // Run the test
-        CollectionController.finalize("customer_id");
-
-        // Verify the results
+        collectionController.collect("1", "");
+        collectionController.collect("1", "end");
+        verify(messageService, times(1+stations.size())).sendMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
 }
