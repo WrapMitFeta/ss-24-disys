@@ -7,7 +7,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-import org.springframework.util.SerializationUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,8 +41,7 @@ public class MessageService {
             System.out.println(" [x] Received '" + message + "'");
             try {
                 controller.print(message_info);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } catch (Exception ignored) {
             }
         };
         System.out.println(" [x] PDF Generator listening to  '" + queueName + "'");
