@@ -11,6 +11,7 @@
     * InvoiceUI
     * PDFGenerator
     * StationDataCollector
+* in every project set the Java version to 17 in `Project Structure`
 * run every project
 
 
